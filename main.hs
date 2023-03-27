@@ -1,1 +1,4 @@
-main = putStrLn "Hello world!"
+hw :: String
+hw = "Hello Word"
+
+main = putStrLn hw
