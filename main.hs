@@ -28,17 +28,13 @@ insertionSort (x:xs) = insert x (insertionSort xs)
 getIndex :: Eq a => [a] -> [a] -> Maybe (Int, Int)
 getIndex subset list = do
     let startIndexMaybe = findIndex (isPrefixOf subset) (tails list)
-        endIndexMaybe = findIndex (isSuffixOf subset) (tails list)
+        endIndexMaybe = findIndex (isSuffixOf (reverse subset)) (reverse (tails (reverse list)))
     startIndex <- maybe (Just (-1)) Just startIndexMaybe
+    let endIndex = maybe (startIndex + length subset - 1) (\i -> length list - i - length subset) endIndexMaybe
+    let startIndex' = startIndex +1
+    let endIndex' = endIndex +1
+    return (startIndex', endIndex')
 
-    let startIndex' = startIndex + 1
-    endIndex <- maybe (Just (-1)) Just endIndexMaybe
-
-    let endIndex' = if (endIndex -1)  > 100 then startIndex' else endIndex +1 --doesnt work
-        n = length subset
-
-    let endIndex'' = length list - endIndex' - n
-    return (startIndex', endIndex'')
 --ksmallest
 ksmallest :: [Int] -> Int -> [(Int, [Int])]
 --fst returnar första värdet i en tupel
@@ -54,7 +50,7 @@ smallestKset xs k
   where
     curlist = xs
     smallestKstring [] = "\n"
-    smallestKstring ((size, lst):xs) = "size: " ++ show size ++ " subset: " ++ show lst ++ "i and j:" ++ show ( getIndex lst curlist) ++ "\n" ++ smallestKstring xs
+    smallestKstring ((size, lst):xs) = "size: [" ++ show size ++ "] - i & j: " ++ show ( getIndex lst curlist) ++ " - sublist: " ++ show lst  ++ "\n" ++ smallestKstring xs
 
 
 
