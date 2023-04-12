@@ -1,4 +1,4 @@
-import Data.List (sortOn)
+import Data.List
 
 -- Generererar x sublists av längd n, t.ex.
 -- subListsWithLength 3 [1,2,3,4,5] ger oss: [[1,2,3],[2,3,4],[3,4,5]]
@@ -24,7 +24,22 @@ insertionSort (x:xs) = insert x (insertionSort xs)
     where insert x [] = [x]
           insert x (y:ys) = if fst x <= fst y then x:y:ys else y:insert x ys
 
+-- getIndex of i and j
+getIndex :: Eq a => [a] -> [a] -> Maybe (Int, Int)
+getIndex subset list = do
+    let startIndexMaybe = findIndex (isPrefixOf subset) (tails list)
+        endIndexMaybe = findIndex (isSuffixOf subset) (tails list)
+    startIndex <- maybe (Just (-1)) Just startIndexMaybe
 
+    let startIndex' = startIndex + 1
+    endIndex <- maybe (Just (-1)) Just endIndexMaybe
+
+    let endIndex' = if (endIndex -1)  > 100 then startIndex' else endIndex +1 --doesnt work
+        n = length subset
+
+    let endIndex'' = length list - endIndex' - n
+    return (startIndex', endIndex'')
+--ksmallest
 ksmallest :: [Int] -> Int -> [(Int, [Int])]
 --fst returnar första värdet i en tupel
 --concatmap genererar alla möjliga subsets av xs, sen sorteras de efter fst
@@ -34,11 +49,19 @@ ksmallest xs k = take k $ sortOn fst $ concatMap subsetsSum [1..length xs]
 
 smallestKset :: [Int] -> Int -> IO ()
 smallestKset xs k
-  | k <= 0 = putStr "There are no sets to pick. :/" --Blocka funktionen om k < 1
-  | otherwise = putStr $ smallestKstring (ksmallest xs k) -- Annars printar vi minsta K set
+  | k <= 0 = putStr "There are no sets to pick. :/"
+  | otherwise = putStr $ smallestKstring (ksmallest xs k)
   where
+    curlist = xs
     smallestKstring [] = "\n"
-    smallestKstring ((size, lst):xs) =  "size: " ++ show size ++ "  subset: " ++ show lst ++ "\n" ++ smallestKstring xs
+    smallestKstring ((size, lst):xs) = "size: " ++ show size ++ " subset: " ++ show lst ++ "i and j:" ++ show ( getIndex lst curlist) ++ "\n" ++ smallestKstring xs
+
+
+
+
+
+
+
 
 
 -- Test case 1
