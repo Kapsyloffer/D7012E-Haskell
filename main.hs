@@ -34,35 +34,33 @@ ksmallest xs k = take k $ sortOn fst $ concatMap subsetsSum [1..length xs]
 
 smallestKset :: [Int] -> Int -> IO ()
 smallestKset xs k
-  | k <= 0 = putStr "There are no sets to pick. :/"
-  | otherwise = putStr $ smallestKstring (ksmallest xs k) -- Printar minsta K set
+  | k <= 0 = putStr "There are no sets to pick. :/" --Blocka funktionen om k < 1
+  | otherwise = putStr $ smallestKstring (ksmallest xs k) -- Annars printar vi minsta K set
   where
     smallestKstring [] = "\n"
-    smallestKstring ((size, lst):xs) =
-      "size: " ++ show size ++ "  subset: " ++ show lst ++ "\n" ++ smallestKstring xs
+    smallestKstring ((size, lst):xs) =  "size: " ++ show size ++ "  subset: " ++ show lst ++ "\n" ++ smallestKstring xs
 
 
--- Genererar [-1, 2, -3, ... , 98, -99]
+-- Test case 1
 list_test1 :: [Int]
-list_test1 = map (\x -> x * (-1)^x) [1..100]
+list_test1 = map (\x -> x * (-1)^x) [1..100] --Genererar [-1, 2, -3, ... , 98, -99]
 
+-- Test case 2
 list_test2 :: [Int]
 list_test2 =  [24,-11,-34,42,-24,7,-19,21]
 
+--Test case 3
 list_test3 :: [Int]
 list_test3 = [3,2,-4,3,2,-5,-2,2,3,-3,2,-5,6,-2,2,3]
 
--- Genererar [-1, 2, -3, 4, -5]
-list_test :: [Int]
-list_test = map (\x -> x * (-1)^x) [1..5]
 
 
---main function
+--Main function
 main :: IO ()
 main = do   
-    --test case 1
+    --test case 1, k = 15
     smallestKset list_test1 15 
-    --test case 2
+    --test case 2, k = 6
     smallestKset list_test2 6
-    --test case 3
+    --test case 3, k = 8
     smallestKset list_test3 8
