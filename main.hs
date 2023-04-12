@@ -3,8 +3,9 @@ import Data.List (sortOn)
 -- Generererar x sublists av längd n, t.ex.
 -- subListsWithLength 3 [1,2,3,4,5] ger oss: [[1,2,3],[2,3,4],[3,4,5]]
 subListsWithLength :: Int -> [a] -> [[a]]
-subListsWithLength _ [] = [[]]
-subListsWithLength n xs@(_:rest) = take n xs : subListsWithLength n rest
+subListsWithLength n xs@(_:rest) | length xs < n = []
+                                 | otherwise = take n xs : subListsWithLength n rest
+subListsWithLength _ _ = []
 
 -- Genererar alla möjliga subsets av en lista
 subsets :: [a] -> [[a]]
@@ -42,8 +43,14 @@ smallestKset xs k
 
 
 -- Genererar [-1, 2, -3, ... , 98, -99]
-list :: [Int]
-list = map (\x -> x * (-1)^x) [1..99]
+list_test1 :: [Int]
+list_test1 = map (\x -> x * (-1)^x) [1..100]
+
+list_test2 :: [Int]
+list_test2 =  [24,-11,-34,42,-24,7,-19,21]
+
+list_test3 :: [Int]
+list_test3 = [3,2,-4,3,2,-5,-2,2,3,-3,2,-5,6,-2,2,3]
 
 -- Genererar [-1, 2, -3, 4, -5]
 list_test :: [Int]
@@ -52,6 +59,10 @@ list_test = map (\x -> x * (-1)^x) [1..5]
 
 --main function
 main :: IO ()
-main = do
-    putStrLn $ show(list_test)
-    smallestKset list_test 5
+main = do   
+    --test case 1
+    smallestKset list_test1 15 
+    --test case 2
+    smallestKset list_test2 6
+    --test case 3
+    smallestKset list_test3 8
