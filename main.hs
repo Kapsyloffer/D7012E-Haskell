@@ -29,7 +29,7 @@ getIndex :: Eq a => [a] -> [a] -> Maybe (Int, Int)
 getIndex subset list = do
     let startIndexMaybe = findIndex (isPrefixOf subset) (tails list)
         endIndexMaybe = findIndex (isSuffixOf (reverse subset)) (reverse (tails (reverse list)))
-    startIndex <- maybe (Just (-1)) Just startIndexMaybe
+    startIndex <- maybe (Just (-1)) Just startIndexMaybe  
     let endIndex = maybe (startIndex + length subset - 1) (\i -> length list - i - length subset) endIndexMaybe
     let startIndex' = startIndex +1
     let endIndex' = endIndex +1
@@ -48,16 +48,14 @@ smallestKset xs k
   | k <= 0 = putStr "There are no sets to pick. :/"
   | otherwise = putStr $ smallestKstring (ksmallest xs k)
   where
-    curlist = xs
+    curlist = xs --curlist är listan xs så vi kan compara
     smallestKstring [] = "\n"
-    smallestKstring ((size, lst):xs) = "size: [" ++ show size ++ "] - i & j: " ++ show ( getIndex lst curlist) ++ " - sublist: " ++ show lst  ++ "\n" ++ smallestKstring xs
-
-
-
-
-
-
-
+    smallestKstring ((size, lst):xs) = "size: [" ++ show size ++ "] - i & j: " ++ printIndex ++ " - sublist: " ++ show lst  ++ "\n" ++ smallestKstring xs
+      where
+        printIndex = 
+            case getIndex lst curlist of
+            Just (i, j) -> " i: " ++ show i ++ " j: " ++ show --pure print of i & j
+            Nothing -> "Could not find indices"
 
 
 -- Test case 1
