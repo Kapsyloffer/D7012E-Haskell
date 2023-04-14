@@ -54,7 +54,7 @@ smallestKset xs k
       where
         printIndex = 
             case getIndex lst curlist of
-            Just (i, j) -> " i: " ++ show i ++ " j: " ++ show --pure print of i & j
+            Just (i, j) -> " i: " ++ show i ++ " j: " ++ show j --pure print of i & j
             Nothing -> "Could not find indices"
 
 
