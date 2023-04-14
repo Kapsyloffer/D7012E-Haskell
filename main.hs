@@ -50,7 +50,7 @@ smallestKset xs k
   where
     curlist = xs --curlist är listan xs så vi kan compara
     smallestKstring [] = "\n"
-    smallestKstring ((size, lst):xs) = "size: [" ++ show size ++ "] - i & j: " ++ printIndex ++ " - sublist: " ++ show lst  ++ "\n" ++ smallestKstring xs
+    smallestKstring ((size, lst):xs) = "size: [" ++ show size ++ "] " ++ printIndex ++ " - sublist: " ++ show lst  ++ "\n" ++ smallestKstring xs
       where
         printIndex = 
             case getIndex lst curlist of
