@@ -1,3 +1,5 @@
+--Christoffer Lindkvist
+
 import Data.List
 
 -- Generererar x sublists av längd n, t.ex.
@@ -10,14 +12,14 @@ subListsWithLength _ _ = []
 -- Genererar alla möjliga subsets av en lista
 subsets :: [a] -> [[a]]
 subsets [] = [[]]
-subsets (x:xs) = map (x:) (subsets xs) ++ subsets xs
+subsets (x:xs) = map (x:) (subsets xs) ++ subsets xs --map appliar her x i början av alla subsets t.ex. om x = 1: till [2,3], [3,4], [2,4] blir 1, 2, 3; 1, 3, 4; 1, 2, 4
 
--- Räknar ihop summan av ett givet subset
+-- Räknar ihop summan av ett givet subset, t.ex. [1, 2] ger 3
 sumSubsets :: [Int] -> [(Int, [Int])]
 sumSubsets [] = [(0, [])]
 sumSubsets xs = [(sum xs', xs') | n <- [1..length xs], xs' <- subListsWithLength n xs]
 
--- Sorterar subset efter storlek
+-- Sorterar subset efter storlek, t.ex. [-99] hamnar före [-98]
 insertionSort :: Ord a => [(a, [b])] -> [(a, [b])]
 insertionSort [] = []
 insertionSort (x:xs) = insert x (insertionSort xs)
@@ -27,8 +29,8 @@ insertionSort (x:xs) = insert x (insertionSort xs)
 -- getIndex of i and j
 getIndex :: Eq a => [a] -> [a] -> Maybe (Int, Int)
 getIndex subset list = do
-    let startIndexMaybe = findIndex (isPrefixOf subset) (tails list)
-        endIndexMaybe = findIndex (isSuffixOf (reverse subset)) (reverse (tails (reverse list)))
+    let startIndexMaybe = findIndex (isPrefixOf subset) (tails list) --hittar startindexen av subsetet
+        endIndexMaybe = findIndex (isSuffixOf (reverse subset)) (reverse (tails (reverse list))) --hittar slutindexen av subsetet
     startIndex <- maybe (Just (-1)) Just startIndexMaybe  
     let endIndex = maybe (startIndex + length subset - 1) (\i -> length list - i - length subset) endIndexMaybe
     let startIndex' = startIndex +1
